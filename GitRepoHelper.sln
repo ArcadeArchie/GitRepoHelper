@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32210.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitRepoHelper", "src\GitRepoHelper\GitRepoHelper.csproj", "{206699A6-6DE2-4019-A71C-5B1697A2E201}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitRepoHelper.UI", "src\GitRepoHelper.UI\GitRepoHelper.UI.csproj", "{0E5485ED-3294-4EE3-B74C-9C6391DC2595}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{2A61C5D5-8795-4501-98D0-1F70FDB07CB1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Avalonia", "submodules\Notification.Avalonia\Notification.Avalonia\Notification.Avalonia.csproj", "{409D119D-4299-434D-B63B-FCA864154DE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{206699A6-6DE2-4019-A71C-5B1697A2E201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{206699A6-6DE2-4019-A71C-5B1697A2E201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{206699A6-6DE2-4019-A71C-5B1697A2E201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{206699A6-6DE2-4019-A71C-5B1697A2E201}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E5485ED-3294-4EE3-B74C-9C6391DC2595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5485ED-3294-4EE3-B74C-9C6391DC2595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5485ED-3294-4EE3-B74C-9C6391DC2595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5485ED-3294-4EE3-B74C-9C6391DC2595}.Release|Any CPU.Build.0 = Release|Any CPU
+		{409D119D-4299-434D-B63B-FCA864154DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{409D119D-4299-434D-B63B-FCA864154DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{409D119D-4299-434D-B63B-FCA864154DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{409D119D-4299-434D-B63B-FCA864154DE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{409D119D-4299-434D-B63B-FCA864154DE6} = {2A61C5D5-8795-4501-98D0-1F70FDB07CB1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC045F5E-4A7B-442F-9E6E-CECEFC4F888B}
+	EndGlobalSection
+EndGlobal

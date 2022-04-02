@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:GitRepoHelper.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:notifications="clr-namespace:Avalonia.Notification.Controls;assembly=Notification.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="GitRepoHelper.UI.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="GitRepoHelper">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="3*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Border Grid.Column="1" ZIndex="11">
+      <notifications:NotificationMessageContainer Manager="{Binding NotificationManager}"/>
+    </Border>
+    <TabControl Name="Tabs" Grid.Column="0" Grid.ColumnSpan="3">
+      <TabItem Header="Watched Directories">
+        <Grid ShowGridLines="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition MaxHeight="45"/>
+          </Grid.RowDefinitions>
+          <ListBox Items="{Binding WatchedPaths}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Path}"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <DockPanel Grid.Row="1" Margin="0,5,0,5" HorizontalAlignment="Stretch" LastChildFill="True">
+            <Button Content="Add Path" DockPanel.Dock="Right" Command="{Binding AddPathCmd}" CommandParameter="{Binding PathText}"/>
+            <TextBox Watermark="Manually enter path" Margin="0,0,5,0" DockPanel.Dock="Left" Text="{Binding PathText}"/>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+    </TabControl>
+  </Grid>
+</Window>

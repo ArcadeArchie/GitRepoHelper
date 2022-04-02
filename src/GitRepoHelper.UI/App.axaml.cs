@@ -19,7 +19,7 @@ namespace GitRepoHelper.UI
             {
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new MainWindowViewModel() { Parent = desktop.MainWindow },
                 };
             }
 

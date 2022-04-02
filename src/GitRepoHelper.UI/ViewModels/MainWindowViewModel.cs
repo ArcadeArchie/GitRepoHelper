@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using GitRepoHelper.Util;
 using GitRepoHelper.Models;
+using GitRepoHelper.UI.Util;
+using GitRepoHelper.UI.Views;
 
 namespace GitRepoHelper.UI.ViewModels
 {
@@ -39,12 +41,16 @@ namespace GitRepoHelper.UI.ViewModels
                 {
                     //if (App.Current == null || App.Current.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
                     //    return;
-                    CreateWarningMsg("The give path leads to a file");
+                    this.CreateWarningMsg("The given path leads to a file, add parent directory?", btn =>
+                    {
+                        WatchedPaths.Add(new WatchedPath { Path = DirectoryHelper.GetParentDirFromFile(path) });
+                    });
                 }
                 else
                 {
                     WatchedPaths.Add(new WatchedPath { Path = path });
                 }
+                PathText = "";
             }
         }
     }

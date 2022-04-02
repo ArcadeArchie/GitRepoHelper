@@ -9,9 +9,9 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="GitRepoHelper">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />

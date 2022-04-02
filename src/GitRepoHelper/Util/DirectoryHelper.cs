@@ -27,6 +27,6 @@ namespace GitRepoHelper.Util
             return Path.GetFullPath(targetPath);
         }
 
-
+        public static string GetParentDirFromFile(string filePath) => Path.GetDirectoryName(filePath);
     }
 }

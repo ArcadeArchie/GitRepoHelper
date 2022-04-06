@@ -9,20 +9,27 @@ using GitRepoHelper.Util;
 using GitRepoHelper.Models;
 using GitRepoHelper.UI.Util;
 using GitRepoHelper.UI.Views;
+using GitRepoHelper.Services;
+using GitRepoHelper.Data.Abstractions;
+using GitRepoHelper.Data;
 
 namespace GitRepoHelper.UI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly IRepoHelperService _repoHelperService;
 
-        public ObservableCollection<WatchedPath> WatchedPaths { get; set; } = new();
+        #region Properties
+        public ObservableCollection<WatchedPath> WatchedPaths => _repoHelperService.WatchedDirs;
 
         [Reactive]
         public string? PathText { get; set; }
         public ReactiveCommand<string, Unit> AddPathCmd { get; set; }
+        #endregion
 
         public MainWindowViewModel()
         {
+            _repoHelperService = App.Instance.GetRequiredService<IRepoHelperService>();
             AddPathCmd = ReactiveCommand.CreateFromTask<string>(HandleAddPath);
         }
 
@@ -35,23 +42,15 @@ namespace GitRepoHelper.UI.ViewModels
                 var diag = new OpenFolderDialog();
                 path = await diag.ShowAsync(desktop.MainWindow);
             }
-            if (DirectoryHelper.DoesPathExist(path, out bool isFilePath))
-            {
-                if (isFilePath)
+
+            if(!_repoHelperService.AddWatchedDir(path))
+                this.CreateWarningMsg("The given path leads to a file, add parent directory?", btn =>
                 {
-                    //if (App.Current == null || App.Current.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
-                    //    return;
-                    this.CreateWarningMsg("The given path leads to a file, add parent directory?", btn =>
-                    {
-                        WatchedPaths.Add(new WatchedPath { Path = DirectoryHelper.GetParentDirFromFile(path) });
-                    });
-                }
-                else
-                {
-                    WatchedPaths.Add(new WatchedPath { Path = path });
-                }
+                    WatchedPaths.Add(new WatchedPath { Path = DirectoryHelper.GetParentDirFromFile(path) });
+                    PathText = "";
+                });
+            else
                 PathText = "";
-            }
         }
     }
 }

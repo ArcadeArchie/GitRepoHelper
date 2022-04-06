@@ -7,7 +7,7 @@ namespace GitRepoHelper.Util
 {
     public static class DirectoryHelper
     {
-        public static bool DoesPathExist(string targetPath, out bool isFilePath)
+        public static bool DoesPathExist(string? targetPath, out bool isFilePath)
         {
             if (string.IsNullOrEmpty(targetPath))
             {
@@ -27,6 +27,14 @@ namespace GitRepoHelper.Util
             return Path.GetFullPath(targetPath);
         }
 
-        public static string GetParentDirFromFile(string filePath) => Path.GetDirectoryName(filePath);
+        public static IEnumerable<string> GetChildren(string path) =>
+            Directory.EnumerateDirectories(path);
+
+        public static string GetParentDirFromFile(string? filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                throw new InvalidOperationException("The given path must not be null or empty");
+            return Path.GetDirectoryName(filePath) ?? throw new InvalidOperationException("The given path is not valid");
+        }
     }
 }

@@ -31,7 +31,10 @@
           <ListBox Items="{Binding WatchedPaths}">
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Path}"/>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Path}"/>
+                  <Button />
+                </StackPanel>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using GitRepoHelper.Models;
+using GitRepoHelper.UI.ViewModels;
 using System;
 using System.Linq;
 
@@ -29,7 +30,7 @@ namespace GitRepoHelper.UI.Views
                     
                 }
                 else
-                    items.Add(new TabItem { DataContext = item, Header = item.DisplayName ?? $"Watched Dir{items.Count}" });
+                    items.Add(new TabItem { DataContext = new WatchedDirViewModel(item), Header = item.DisplayName ?? $"Watched Dir{items.Count}" });
             }
         }
     }

@@ -12,7 +12,15 @@ namespace GitRepoHelper.UI
     {
         public IServiceProvider AppServices { get; private set; }
 
-        public static App? Instance => Current as App;
+        public static App Instance
+        {
+            get
+            {
+                if (Current is not App app || Current is null)
+                    throw new InvalidOperationException("Invalid App Type");
+                return app;
+            }
+        }
 
         public App()
         {
@@ -29,10 +37,7 @@ namespace GitRepoHelper.UI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel() { Parent = desktop.MainWindow },
-                };
+                desktop.MainWindow = new MainWindow();
             }
 
             base.OnFrameworkInitializationCompleted();

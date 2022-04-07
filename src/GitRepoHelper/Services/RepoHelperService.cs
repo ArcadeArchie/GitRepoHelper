@@ -2,6 +2,7 @@
 using GitRepoHelper.Data.Abstractions;
 using GitRepoHelper.Models;
 using GitRepoHelper.Util;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,15 +14,14 @@ namespace GitRepoHelper.Services
 {
     public interface IRepoHelperService : IRepository<AppDbContext>
     {
-        ObservableCollection<WatchedPath> WatchedDirs { get; set; }
+        Task<IEnumerable<WatchedPath>> LoadSavedDirs();
 
-        bool AddWatchedDir(string? path);
+        Task<WatchedPath?> AddWatchedDirAsync(string? path);
     }
 
     public class RepoHelperService : IRepoHelperService
     {
         public AppDbContext Context { get; private set; }
-        public ObservableCollection<WatchedPath> WatchedDirs { get; set; } = new ObservableCollection<WatchedPath>();
 
 
         public RepoHelperService(AppDbContext context)
@@ -30,15 +30,25 @@ namespace GitRepoHelper.Services
         }
 
 
-        public bool AddWatchedDir(string? path)
+        public async Task<IEnumerable<WatchedPath>> LoadSavedDirs() 
+            => await Context.WatchedPaths.ToListAsync();
+
+        public async Task<WatchedPath?> AddWatchedDirAsync(string? path)
         {
             if (DirectoryHelper.DoesPathExist(path, out bool isFilePath) && !isFilePath)
             {
-                WatchedDirs.Add(new WatchedPath { Path = path });
-                return true;
+                if (string.IsNullOrEmpty(path))
+                    return null;
+                var item = new WatchedPath { Id = Guid.NewGuid(), Path = path };
+                if (!await Context.WatchedPaths.AnyAsync(x => x.Path == item.Path))
+                {
+                    await Context.WatchedPaths.AddAsync(item);
+                    await Context.SaveChangesAsync();
+                }
+                return item;
             }
 
-            return false;
+            return null;
         }
 
         public static int DirRepoCount(string path)

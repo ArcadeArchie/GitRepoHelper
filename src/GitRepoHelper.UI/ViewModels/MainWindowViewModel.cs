@@ -12,6 +12,8 @@ using GitRepoHelper.UI.Views;
 using GitRepoHelper.Services;
 using GitRepoHelper.Data.Abstractions;
 using GitRepoHelper.Data;
+using System;
+using System.Reactive.Linq;
 
 namespace GitRepoHelper.UI.ViewModels
 {
@@ -20,7 +22,7 @@ namespace GitRepoHelper.UI.ViewModels
         private readonly IRepoHelperService _repoHelperService;
 
         #region Properties
-        public ObservableCollection<WatchedPath> WatchedPaths => _repoHelperService.WatchedDirs;
+        public ObservableCollection<WatchedPath> WatchedPaths { get; set; } = new();
 
         [Reactive]
         public string? PathText { get; set; }
@@ -31,7 +33,17 @@ namespace GitRepoHelper.UI.ViewModels
         {
             _repoHelperService = App.Instance.GetRequiredService<IRepoHelperService>();
             AddPathCmd = ReactiveCommand.CreateFromTask<string>(HandleAddPath);
+            LoadData().Subscribe(x => WatchedPaths.Add(x));
         }
+
+        private IObservable<WatchedPath> LoadData() =>
+            Observable.Create<WatchedPath>(async observer => 
+            {
+                foreach (var item in await _repoHelperService.LoadSavedDirs())
+                {
+                    observer.OnNext(item);
+                }
+            });
 
         private async Task HandleAddPath(string? path)
         {
@@ -41,16 +53,23 @@ namespace GitRepoHelper.UI.ViewModels
                     return;
                 var diag = new OpenFolderDialog();
                 path = await diag.ShowAsync(desktop.MainWindow);
+                if (string.IsNullOrEmpty(path))
+                    return;
             }
-
-            if(!_repoHelperService.AddWatchedDir(path))
-                this.CreateWarningMsg("The given path leads to a file, add parent directory?", btn =>
+            var item = await _repoHelperService.AddWatchedDirAsync(path);
+            if (item == null)
+                this.CreateWarningMsg("The given path leads to a file, add parent directory?", async btn =>
                 {
-                    WatchedPaths.Add(new WatchedPath { Path = DirectoryHelper.GetParentDirFromFile(path) });
+                    item = await _repoHelperService.AddWatchedDirAsync(DirectoryHelper.GetParentDirFromFile(path));
+                    if(item != null)
+                        WatchedPaths.Add(item);
                     PathText = "";
                 });
             else
+            {
+                WatchedPaths.Add(item);
                 PathText = "";
+            }
         }
     }
 }

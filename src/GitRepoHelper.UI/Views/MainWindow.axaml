@@ -8,7 +8,18 @@
         x:Class="GitRepoHelper.UI.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="GitRepoHelper">
-
+  <Window.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="ContextMenu">
+        <Setter.Value>
+          <ContextMenu>
+            <MenuItem Header="Set Displayname" CommandParameter="{Binding }"/>
+            <MenuItem Header="Remove Path" CommandParameter="{Binding }"/>
+          </ContextMenu>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Styles>
   <Design.DataContext>
     <vm:MainWindowViewModel/>
   </Design.DataContext>
@@ -22,7 +33,22 @@
       <notifications:NotificationMessageContainer Manager="{Binding NotificationManager}"/>
     </Border>
     <TabControl Name="Tabs" Grid.Column="0" Grid.ColumnSpan="3">
+      <TabControl.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding }"/>
+            <Button Content="X" Click="OnRemoveTab"/>
+          </StackPanel>
+        </DataTemplate>
+      </TabControl.ItemTemplate>
       <TabItem Header="Watched Directories">
+        <TabItem.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding }"/>
+            </StackPanel>
+          </DataTemplate>
+        </TabItem.HeaderTemplate>
         <Grid ShowGridLines="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
           <Grid.RowDefinitions>
             <RowDefinition/>

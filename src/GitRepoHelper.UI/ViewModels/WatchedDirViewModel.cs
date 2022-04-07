@@ -9,9 +9,11 @@ namespace GitRepoHelper.UI.ViewModels
 {
     public class WatchedDirViewModel : ViewModelBase
     {
+        private readonly WatchedPath _context;
+
         public WatchedDirViewModel(WatchedPath dir)
         {
-
+            _context = dir;
         }
     }
 }
